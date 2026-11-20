@@ -1,0 +1,66 @@
+# Build deweloperski. NIGDY: Flash Encryption, Secure Boot, wypalanie eFuse (patrz sdkconfig.defaults.release).
+CONFIG_IDF_TARGET="esp32"
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=9
+# Limit bondów NimBLE >= BRAMA_MAX_CLIENTS (8) + 1 na staging: przy domyślnym 3 sprawdzenie przepełnienia magazynu
+# (ble_sm_chk_store_overflow) odrzucało każde parowanie z 3 klientami (Pairing Failed 0x08), 15.11.2026.
+CONFIG_BT_NIMBLE_MAX_BONDS=9
+# Stos hosta NimBLE: pomiar 16.11.2026 przy 3 łączach i rejestracji dał zapas 924 B z 4096 (komenda `mem`); +1 KB ze sterty.
+CONFIG_BT_NIMBLE_HOST_TASK_STACK_SIZE=5120
+# Task watchdog resetuje płytkę (17.11.2026): zawieszone zadanie nie zostawia sterownika bez odpowiedzi; kopia reguły w RTC przeżywa reset.
+CONFIG_ESP_TASK_WDT_PANIC=y
+CONFIG_BTDM_CTRL_BLE_MAX_CONN=9
+CONFIG_BTDM_CTRL_MODE_BLE_ONLY=y
+CONFIG_ESP_PHY_CALIBRATION_AND_DATA_STORAGE=n
+CONFIG_MBEDTLS_ECJPAKE_C=y
+
+# Flash 4 MB i tabela partycji z 15.5
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_PARTITION_TABLE_OFFSET=0xA000
+
+# Wersja obrazu (Device Information, OTA)
+CONFIG_APP_PROJECT_VER_FROM_CONFIG=y
+CONFIG_APP_PROJECT_VER="0.1.0"
+
+# Podpis obrazu ECDSA P-256 BEZ sprzętowego Secure Boot i bez eFuse (15.5). Klucz poza repozytorium:
+# tools/gen_dev_signing_key.sh tworzy go w ~/.config/brama/ i dowiązanie keys/dev_signing_key.pem (katalog ignorowany).
+CONFIG_SECURE_SIGNED_APPS_NO_SECURE_BOOT=y
+CONFIG_SECURE_SIGNED_APPS_ECDSA_SCHEME=y
+CONFIG_SECURE_SIGNED_ON_UPDATE_NO_SECURE_BOOT=y
+CONFIG_SECURE_BOOT_BUILD_SIGNED_BINARIES=y
+CONFIG_SECURE_BOOT_SIGNING_KEY="keys/dev_signing_key.pem"
+
+# Powrót do poprzedniego obrazu i numer bezpieczeństwa. Anti-rollback WYŁĄCZNIE z emulacją eFuse (partycja
+# emul_efuse) — bez emulacji potwierdzenie obrazu zapisałoby nieodwracalnie eFuse.
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
+CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK=y
+CONFIG_BOOTLOADER_EFUSE_SECURE_VERSION_EMULATE=y
+CONFIG_BOOTLOADER_APP_SECURE_VERSION=1
+
+# Koniec impulsu odporny na zapis flash (cache wyłączony): callback timera i GPIO w IRAM (15.5, A80)
+CONFIG_ESP_TIMER_SUPPORTS_ISR_DISPATCH_METHOD=y
+CONFIG_GPIO_CTRL_FUNC_IN_IRAM=y
+
+# BLE: tylko LE Secure Connections (9.1): odrzucenie legacy pairing zapewnia SM_LEGACY=n i SM_SC=y. SM_SC_ONLY MUSI być 0:
+# to nie „bez legacy”, lecz tryb wymagający uwierzytelnionego klucza (MITM) dla każdej charakterystyki z WRITE_ENC; parowanie
+# to Just Works (spec 9.1), więc z wartością 1 NimBLE odpowiadał ATT 0x05 na zapis RX. Bez utrwalania bondów przez stos
+# (własny magazyn z obrazu, 9.5).
+CONFIG_BT_NIMBLE_SM_LEGACY=n
+CONFIG_BT_NIMBLE_SM_SC=y
+CONFIG_BT_NIMBLE_SM_SC_ONLY=0
+CONFIG_BT_NIMBLE_NVS_PERSIST=n
+CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=517
+CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME="Brama"
+
+# Piny prototypu (spec 2.2). PAIR_BUTTON na IO0: aktywny stanem niskim, pull-up wewnętrzny; IO0 trzymany przy resecie = tryb download.
+CONFIG_BRAMA_GPIO_OPEN=17
+CONFIG_BRAMA_GPIO_CLOSE=18
+CONFIG_BRAMA_GPIO_PAIR_BUTTON=0
+CONFIG_BRAMA_GPIO_STATUS_LED=19
+CONFIG_BRAMA_GPIO_INTERLOCK=5
+
+# Dioda STATUS_LED aktywna stanem niskim
+CONFIG_BRAMA_LED_ACTIVE_LOW=y

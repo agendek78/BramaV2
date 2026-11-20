@@ -1,0 +1,8 @@
+build/
+sdkconfig
+sdkconfig.old
+test/host/build/
+test/host/sdkconfig
+test/host/sdkconfig.old
+managed_components/
+keys/

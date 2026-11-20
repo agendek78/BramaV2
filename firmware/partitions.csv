@@ -1,0 +1,9 @@
+# Tabela partycji flash 4 MB (spec 15.5); tablica pod 0xA000 (zapas), bo bootloader z weryfikacją podpisu i rollbackiem ma ~0x7E00 B. Bez partycji factory (wymóg anti-rollback ESP-IDF).
+# Name,     Type, SubType,  Offset,   Size,     Flags
+nvs,        data, nvs,      0xB000,   0x4000,
+otadata,    data, ota,      0xF000,   0x2000,
+phy_init,   data, phy,      0x11000,  0x1000,
+nvs_keys,   data, nvs_keys, 0x12000,  0x1000,   encrypted
+emul_efuse, data, efuse,    0x13000,  0x2000,
+ota_0,      app,  ota_0,    0x20000,  0x1E0000,
+ota_1,      app,  ota_1,    0x200000, 0x1E0000,

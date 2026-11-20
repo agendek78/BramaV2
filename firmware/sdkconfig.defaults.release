@@ -1,0 +1,9 @@
+# DOKUMENTACJA ustawień produkcyjnych (Etap 5) — NIE jest używany w buildach deweloperskich.
+# Włączenie tych opcji programuje nieodwracalnie eFuse. Wymaga instrukcji produkcyjnej dla konkretnej rewizji układu (spec 15.3).
+# CONFIG_SECURE_FLASH_ENC_ENABLED=y
+# CONFIG_SECURE_FLASH_ENCRYPTION_MODE_RELEASE=y
+# CONFIG_NVS_ENCRYPTION=y
+# CONFIG_SECURE_BOOT=y
+# CONFIG_SECURE_BOOT_V1_ENABLED=y          # ECDSA na klasycznym ESP32 (spec 15.5); alternatywa: V2 RSA przy rewizji >= 3.0
+# CONFIG_BOOTLOADER_EFUSE_SECURE_VERSION_EMULATE is not set   # rzeczywisty secure_version w eFuse
+# CONFIG_SECURE_UART_ROM_DL_MODE_DISABLED / ograniczenie trybu download, wyłączony JTAG

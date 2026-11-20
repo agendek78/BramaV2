@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Grafika bramy jak na ekranie głównym telefonu (GateIllustration), bez koloru stanu: stan pokazuje kropka w wierszu. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="176dp"
+    android:height="176dp"
+    android:viewportWidth="176"
+    android:viewportHeight="176">
+    <path android:fillColor="#240E7C86" android:pathData="M88,0a88,88 0,1 0,0.001 0z" />
+    <!-- murki -->
+    <path android:fillColor="#7327475C" android:pathData="M23,92h26v39h-26zM127,92h26v39h-26z" />
+    <!-- słupki z daszkami -->
+    <path android:fillColor="#FF27475C" android:pathData="M47.5,53h10.5v78h-10.5zM118,53h10.5v78h-10.5z" />
+    <path android:fillColor="#FF27475C" android:pathData="M45.4,48.4h14.8v5.3h-14.8zM115.9,48.4h14.8v5.3h-14.8z" />
+    <!-- lampki -->
+    <path android:fillColor="#FF1F9D55" android:pathData="M52.7,41m-2.8,0a2.8,2.8 0,1 1,5.6 0a2.8,2.8 0,1 1,-5.6 0zM123.2,41m-2.8,0a2.8,2.8 0,1 1,5.6 0a2.8,2.8 0,1 1,-5.6 0z" />
+    <!-- skrzydła -->
+    <path android:strokeColor="#FF0E7C86" android:strokeWidth="4.6" android:fillColor="#00000000"
+        android:pathData="M59,74h28v50h-28zM89,74h28v50h-28z" />
+    <path android:strokeColor="#FF0E7C86" android:strokeWidth="3.6" android:fillColor="#00000000"
+        android:pathData="M59,124L87,74M117,124L89,74M66,74v50M73,74v50M80,74v50M96,74v50M103,74v50M110,74v50" />
+    <!-- podłoże -->
+    <path android:fillColor="#5927475C" android:pathData="M17.6,130.2h140.8v3.9h-140.8z" />
+</vector>
