@@ -27,3 +27,10 @@ keystore.properties
 log.txt
 *.log
 *.hprof
+
+# KiCad local state and backups
+hw/*.kicad_prl
+hw/*-backups/
+hw/_autosave-*
+hw/*.kicad_*-bak
+hw/fp-info-cache
