@@ -1,70 +1,73 @@
 # BramaV2
 
-Sterowanie bramą przez Bluetooth LE: aplikacja Android (z obsługą Android Auto) i firmware sterownika na ESP32.
-Telefon jest centralą BLE, ESP32 urządzeniem peryferyjnym, które podaje impulsy na dwa osobne wyjścia
-(OPEN i CLOSE) napędu bramy.
+**English** | [Polski](README.pl.md)
 
-> **Status: prototyp.** Projekt jest testowany na jednej płytce prototypowej i trzech telefonach. Steruje urządzeniem
-> fizycznym (ruchoma brama), więc przed użyciem w prawdziwej instalacji sprawdź go samodzielnie. Do podpisywania
-> obrazów firmware używany jest klucz deweloperski; produkcyjny Secure Boot, szyfrowanie flash i klucze produkcyjne
-> nie są częścią repozytorium.
+Gate control over Bluetooth LE: an Android app (with Android Auto support) and ESP32 controller firmware.
+The phone is the BLE central; the ESP32 is the peripheral that drives two separate outputs (OPEN and CLOSE)
+of the gate operator.
 
-## Co to robi
+> **Status: prototype.** The project is tested on a single prototype board and three phones. It controls a
+> physical device (a moving gate), so verify it yourself before using it in a real installation. Firmware images
+> are signed with a development key; production Secure Boot, flash encryption and production keys are not part
+> of this repository.
 
-- Dwie komendy: `OPEN` (z opcjonalnym automatycznym zamknięciem po utracie połączenia) i `CLOSE`.
-- Położenie bramy jest zawsze nieznane: potwierdzenie oznacza tylko, że impuls został podany na wyjście.
-- Parowanie przez QR albo 6-cyfrowy PIN sterownika (EC-JPAKE), sesja szyfrowana i uwierzytelniana AES-256-GCM.
-- Do 8 autoryzowanych telefonów jednocześnie; lista telefonów, usuwanie i zmiana nazwy z poziomu aplikacji.
-- Automatyczne zamknięcie wykonuje sterownik, bez udziału telefonu.
-- Aktualizacja firmware przez BLE (OTA): podpisany obraz ECDSA P-256, ochrona przed starszym `secure_version`,
-  powrót do poprzedniej wersji po nieudanym starcie.
-- Android Auto wyświetla interfejs aplikacji działającej na telefonie.
+## What it does
 
-## Struktura repozytorium
+- Two commands: `OPEN` (with optional automatic close after the connection is lost) and `CLOSE`.
+- The gate position is always unknown: an acknowledgement only means that a pulse was driven on the output.
+- Pairing with a QR code or the controller's 6-digit PIN (EC-JPAKE); the session is encrypted and authenticated
+  with AES-256-GCM.
+- Up to 8 authorized phones at the same time; the app can list phones, remove them and rename the current one.
+- Automatic close is performed by the controller, without any involvement of the phone.
+- Firmware update over BLE (OTA): signed ECDSA P-256 image, protection against an older `secure_version`,
+  rollback to the previous version after a failed boot.
+- Android Auto displays the interface of the app running on the phone.
 
-| Katalog | Zawartość |
+## Repository layout
+
+| Directory | Contents |
 |---|---|
-| `app/` | Aplikacja Android (Kotlin, Jetpack Compose), ekrany i usługi |
-| `protocol/` | Protokół na łączu: ramki, kryptografia, EC-JPAKE, wektory testowe |
-| `domain/` | Logika aplikacji, stan i repozytorium bramy (bez zależności od Androida) |
-| `ble/` | Warstwa BLE (Android) i symulowany sterownik do testów |
+| `app/` | Android app (Kotlin, Jetpack Compose): screens and services |
+| `protocol/` | Wire protocol: frames, cryptography, EC-JPAKE, test vectors |
+| `domain/` | App logic, gate state and repository (no Android dependencies) |
+| `ble/` | BLE layer (Android) and a simulated controller for tests |
 | `car/` | Android Auto (Car App Library) |
-| `firmware/` | Firmware ESP32 (ESP-IDF v6.0.1, NimBLE), testy hostowe |
-| `hw/` | Projekt PCB w KiCad 10 (schemat, płytka, interaktywny BOM) |
-| `doc/` | Specyfikacja, projekty modułów, plany i stan implementacji |
+| `firmware/` | ESP32 firmware (ESP-IDF v6.0.1, NimBLE) and host-side tests |
+| `hw/` | PCB project in KiCad 10 (schematic, board, interactive BOM) |
+| `doc/` | Specification, module designs, plans and implementation status |
 
-Dokumentacja jest po polsku. Dobry początek:
+The documentation is written in Polish. Good places to start:
 
-- [`doc/PLAN_I_SPECYFIKACJA_BRAMY.md`](doc/PLAN_I_SPECYFIKACJA_BRAMY.md) — specyfikacja i protokół,
-- [`doc/implementation_status.md`](doc/implementation_status.md) — co jest zrobione i sprawdzone (także na sprzęcie),
-- [`firmware/README.md`](firmware/README.md) — budowanie, testy i konfiguracja firmware.
+- [`doc/PLAN_I_SPECYFIKACJA_BRAMY.md`](doc/PLAN_I_SPECYFIKACJA_BRAMY.md): specification and protocol,
+- [`doc/implementation_status.md`](doc/implementation_status.md): what is done and verified (including on hardware),
+- [`firmware/README.md`](firmware/README.md): firmware build, tests and configuration.
 
-## Aplikacja Android
+## Android app
 
-Wymagania: Android Studio z JDK, Android SDK 37 (`compileSdk`), urządzenie z Androidem 13 (API 33) lub nowszym
-i z Bluetooth LE. Skaner QR korzysta z usług Google Play.
+Requirements: Android Studio with a JDK, Android SDK 37 (`compileSdk`), and a device running Android 13 (API 33)
+or newer with Bluetooth LE. The QR scanner relies on Google Play services.
 
 ```sh
-./gradlew :app:assembleDebug        # build debug
-./gradlew :app:assembleRelease      # build release (R8, bez podpisu: apk trzeba podpisać)
-./gradlew test                      # testy jednostkowe modułów
+./gradlew :app:assembleDebug        # debug build
+./gradlew :app:assembleRelease      # release build (R8, unsigned: the APK has to be signed)
+./gradlew test                      # unit tests of all modules
 ```
 
-Build release ma włączone R8 i skracanie zasobów (ok. 4 MB). Reguły keep dla ML Kit są w
-`app/proguard-rules.pro`. W repozytorium nie ma konfiguracji podpisu wydania.
+The release build has R8 and resource shrinking enabled (about 4 MB). Keep rules for ML Kit are in
+`app/proguard-rules.pro`. The repository contains no release signing configuration.
 
 ## Firmware
 
-Wymagania: ESP-IDF v6.0.1 (`~/.espressif/v6.0.1/esp-idf`), klucz deweloperski do podpisu obrazu.
+Requirements: ESP-IDF v6.0.1 (`~/.espressif/v6.0.1/esp-idf`) and a development key for signing the image.
 
 ```sh
 cd firmware
-tools/gen_dev_signing_key.sh        # jednorazowo: klucz w ~/.config/brama/ (poza repozytorium)
-tools/idf.sh set-target esp32       # jednorazowo
-tools/idf.sh build                  # powstaje podpisany build/brama.bin
+tools/gen_dev_signing_key.sh        # once: key in ~/.config/brama/ (outside the repository)
+tools/idf.sh set-target esp32       # once
+tools/idf.sh build                  # produces the signed build/brama.bin
 ```
 
-Testy hostowe logiki (target `linux`, wymagają pakietu `libbsd-dev`):
+Host-side logic tests (target `linux`, need the `libbsd-dev` package):
 
 ```sh
 cd firmware/test/host
@@ -72,18 +75,18 @@ cd firmware/test/host
 ../../tools/idf.sh build && ./build/brama_host_test.elf
 ```
 
-Szczegóły (piny prototypu, tryb serwisowy, konsola UART, OTA) opisuje [`firmware/README.md`](firmware/README.md).
+Details (prototype pins, service mode, UART console, OTA) are in [`firmware/README.md`](firmware/README.md).
 
-**Uwaga o eFuse.** Na płytce z `hw/` linia GPIO12 ma pull-up, który przy resecie wybiera napięcie flash 1,8 V, a moduł
-ESP32-WROOM-32D ma flash 3,3 V. Na każdej takiej płytce wypalane jest więc eFuse napięcia flash 3,3 V (krok
-nieodwracalny, wykonywany ręcznie przed pierwszym uruchomieniem; opis w `firmware/README.md`).
+**A note on eFuse.** On the board in `hw/`, GPIO12 has a pull-up that selects 1.8 V flash voltage at reset, while
+the ESP32-WROOM-32D module has 3.3 V flash. The 3.3 V flash-voltage eFuse is therefore burned on every such board
+(an irreversible step, done manually before the first boot; see `firmware/README.md`).
 
-## Sprzęt
+## Hardware
 
-Projekt płytki jest w `hw/` (KiCad 10, otwórz `hw/esp32_brama.kicad_pro`): ESP32-WROOM-32D, zasilanie z przetwornicy
-LMR54410, dwa wyjścia OPEN/CLOSE przez transoptory CNY17, wejście blokady (interlock) i diagnostyka UART. Biblioteki
-projektu są w `hw/lib/`. Notatki z analizy płytki są w `doc/implementation_status.md`.
+The board design is in `hw/` (KiCad 10, open `hw/esp32_brama.kicad_pro`): ESP32-WROOM-32D, power from an LMR54410
+buck converter, two OPEN/CLOSE outputs through CNY17 optocouplers, an interlock input and a UART for diagnostics.
+The project libraries are in `hw/lib/`. Notes from the board review are in `doc/implementation_status.md`.
 
-## Licencja
+## License
 
-[MIT](LICENSE). Projekt jest tworzony i testowany przez jedną osobę; wkład i uwagi są mile widziane.
+[MIT](LICENSE). The project is developed and tested by a single person; contributions and feedback are welcome.
