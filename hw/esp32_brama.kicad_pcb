@@ -5845,17 +5845,6 @@
 			(uuid "6e14af38-34a3-4784-931c-deed28d5298c")
 		)
 		(embedded_fonts no)
-		(model "/home/andy/work/kicad/3d_models/Screw Terminal Block 3.5mm Blue 2-way.step"
-			(offset
-				(xyz 1.7 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -90 -0 -0)
-			)
-		)
 	)
 	(footprint "Package_DIP:DIP-6_W7.62mm"
 		(layer "F.Cu")
@@ -7324,17 +7313,6 @@
 			(uuid "2ae57dac-2bfe-4a86-ad46-14d3bb5ade02")
 		)
 		(embedded_fonts no)
-		(model "/home/andy/work/kicad/3d_models/Screw Terminal Block 3.5mm Blue 2-way.step"
-			(offset
-				(xyz 1.7 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -90 -0 -0)
-			)
-		)
 	)
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
 		(layer "F.Cu")
@@ -10393,17 +10371,6 @@
 			(uuid "7d3c5014-2362-4b64-915f-b9a5d1919db5")
 		)
 		(embedded_fonts no)
-		(model "/home/andy/work/kicad/3d_models/Screw Terminal Block 3.5mm Blue 2-way.step"
-			(offset
-				(xyz 1.7 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -90 -0 -0)
-			)
-		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "B.Cu")
@@ -12391,17 +12358,6 @@
 			(uuid "c6c67e88-bcf8-42ff-bae3-7f97f73fa21d")
 		)
 		(embedded_fonts no)
-		(model "/home/andy/work/kicad/3d_models/MicroSD_Socket.STEP"
-			(offset
-				(xyz 0 3 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz -90 -0 -0)
-			)
-		)
 	)
 	(footprint "Resistor_SMD:R_0402_1005Metric"
 		(layer "B.Cu")

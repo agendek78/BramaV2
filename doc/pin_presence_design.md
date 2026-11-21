@@ -32,7 +32,7 @@ Bez potwierdzenia CLOSE wszędzie. Powiadomienie: połączenie od razu po pojawi
 
 ### 3.2. `EcJpake` — EC-JPAKE w formacie mbedTLS
 
-Wzorzec: `esp-idf/components/mbedtls/mbedtls/library/ecjpake.c` (ESP-IDF 5.4, lokalnie `/home/andy/work/esp/v5.4/`). Elementy, które muszą się zgadzać:
+Wzorzec: `esp-idf/components/mbedtls/mbedtls/library/ecjpake.c` (ESP-IDF 5.4, lokalna kopia ESP-IDF). Elementy, które muszą się zgadzać:
 
 - identyfikatory ról ASCII `"client"` (telefon) i `"server"` (ESP32);
 - hasło: bajty ASCII PIN-u jako liczba big-endian (`mbedtls_mpi_read_binary`), redukcja jak w mbedTLS;

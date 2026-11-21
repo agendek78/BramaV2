@@ -6,7 +6,7 @@
 
 **Architektura:** `EcJpake` (obie role, format mbedTLS) na arytmetyce P-256 z BouncyCastle; `PinPakeHandshake` prowadzi rundy 0x26–0x29 i wyprowadza `K_pin`, którym dalej działa niezmieniony `PairingHandshake`. `BleGateLink.pair(PairingSecret)` dokłada fazę PAKE przed PAIR. `GateRepository` dostaje automat powiadomienia (HIDDEN/SHOWN/QUIET) z licznikiem 5 min i powodami w `ConnectionPolicy`.
 
-**Stos:** Kotlin 2.2.10, JVM 11 (`:protocol`, `:domain`), Android library (`:ble`), `org.bouncycastle:bcprov-jdk18on:1.79` (w cache Gradle), coroutines 1.10.2, JUnit 4; do wektorów: `gcc` + mbedTLS 3.6.2 z `/home/andy/work/esp/v5.4/esp-idf/components/mbedtls/mbedtls`.
+**Stos:** Kotlin 2.2.10, JVM 11 (`:protocol`, `:domain`), Android library (`:ble`), `org.bouncycastle:bcprov-jdk18on:1.79` (w cache Gradle), coroutines 1.10.2, JUnit 4; do wektorów: `gcc` + mbedTLS 3.6.2 z `esp-idf/components/mbedtls/mbedtls` (ESP-IDF 5.4).
 
 **Specyfikacja:** `doc/pin_presence_design.md` (zatwierdzony), `doc/PLAN_I_SPECYFIKACJA_BRAMY.md` 1.4 (3, 4.1, 4.3, 5.2, 8.2, 9.2, 11.3, 11.4, 12.4, A54, A67–A72), `doc/domain_design.md`, `doc/ble_design.md`. Wykonawca czyta wszystkie.
 

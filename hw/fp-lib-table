@@ -1,4 +1,4 @@
 (fp_lib_table
 	(version 7)
-	(lib (name "footprinty") (type "KiCad") (uri "/home/andy/work/kicad/footprinty") (options "") (descr ""))
+	(lib (name "footprinty") (type "KiCad") (uri "${KIPRJMOD}/lib/footprinty.pretty") (options "") (descr "Project footprints (SD_MICRO, brama_logo)"))
 )
