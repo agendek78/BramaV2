@@ -28,6 +28,19 @@ anti-rollback **wyłącznie z emulacją eFuse** (`CONFIG_EFUSE_VIRTUAL=y`), tabl
 pod `0xA000`). Nigdy nie włączać Flash Encryption, Secure Boot ani zapisu eFuse w tym pliku —
 `sdkconfig.defaults.release` jest tylko dokumentacją ustawień produkcyjnych.
 
+## Płytka docelowa (`../hw`): napięcie flash (eFuse)
+
+Na PCB z `hw/` linia GPIO12 (strapping `MTDI`) ma pull-up R8 do 3,3 V, co przy resecie wybiera flash 1,8 V, a moduł
+ESP32-WROOM-32D ma flash 3,3 V. **Na każdej takiej płytce wypalamy eFuse napięcia flash 3,3 V** (decyzja właściciela,
+21.11.2026), przed pierwszym uruchomieniem firmware. Krok jest nieodwracalny i wykonywany ręcznie, nie z
+`sdkconfig.defaults`:
+
+```sh
+espefuse --chip esp32 -p <PORT> set-flash-voltage 3.3V   # składnia zależna od wersji esptool (starsze: set_flash_voltage)
+```
+
+Płytka prototypowa (moduł deweloperski) tego nie wymaga. Polecenie nie było uruchamiane na tym PCB.
+
 ## Testy hostowe (Unity, target `linux`)
 
 ```sh
