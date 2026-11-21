@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# ML Kit / Firebase components: ładowane refleksją przez ComponentDiscovery
+-keep class * implements com.google.firebase.components.ComponentRegistrar { <init>(); }
+-keep class * implements com.google.firebase.components.ComponentRegistrar
+-keep class com.google.mlkit.** { <init>(); }
+-keep class com.google.android.gms.internal.mlkit_** { *; }

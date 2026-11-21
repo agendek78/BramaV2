@@ -23,7 +23,7 @@ CONFIG_PARTITION_TABLE_OFFSET=0xA000
 
 # Wersja obrazu (Device Information, OTA)
 CONFIG_APP_PROJECT_VER_FROM_CONFIG=y
-CONFIG_APP_PROJECT_VER="0.1.0"
+CONFIG_APP_PROJECT_VER="1.0.0"
 
 # Podpis obrazu ECDSA P-256 BEZ sprzętowego Secure Boot i bez eFuse (15.5). Klucz poza repozytorium:
 # tools/gen_dev_signing_key.sh tworzy go w ~/.config/brama/ i dowiązanie keys/dev_signing_key.pem (katalog ignorowany).

@@ -21,7 +21,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -31,6 +32,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    packaging {
+        resources {
+            // BouncyCastle używany tylko do krzywych EC (J-PAKE); dane PQC to ~1,2 MB zbędnych zasobów
+            excludes += "org/bouncycastle/pqc/**"
+            excludes += "org/bouncycastle/x509/**"
+        }
     }
     buildFeatures {
         compose = true
